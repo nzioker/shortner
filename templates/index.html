@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Url Shortner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">My Shortner</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            
+            
+          </div>
+        </div>
+      </nav>
+    <div class="container">
+        <h2 class="display-4">Url Shortner</h2>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <form id="post-form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <strong><label for="exampleFormControlInput1" class="form-label">Url</label></strong>
+                        <input type="text" class="form-control" name="link" id="link" placeholder="Enter Url here">
+                      </div>
+                      <div class="mb-3 buttons">
+                        <button type="submit" id="submit-btn" class="btn btn-primary w-100">Shorten</button>
+                      </div>
+                      <div class="mb-3">
+                    <strong><label for="exampleFormControlTextarea1" class="form-label">Shortened URL</label></strong>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <script type="text/javascript">
+        $(document).on("submit", "#post-form", function(e){
+            e.preventDefault();
+
+            $.ajax({
+              type: 'POST',
+              url: '/create',
+              data: {
+                link:$('#link').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              },
+              success: function(data){
+                $('textarea').html('localhost:8000/'+data);
+              }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
